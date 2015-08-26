@@ -1,0 +1,103 @@
+*shortcut.vim*   Discoverable shortcuts inspired by spacemacs, powered by |unite|.
+
+Author:   Suraj N. Kurapati <github.com/sunaku>
+License:  Same terms as Vim itself (see |license|)
+Homepage: https://github.com/sunaku/vim-shortcut
+
+------------------------------------------------------------------------------
+INTRODUCTION                                                    *shortcut-intro*
+------------------------------------------------------------------------------
+
+This plugin provides a discoverable shortcut system for Vim that was inspired
+by spacemacs https://github.com/syl20bnr/spacemacs#readme and is powered by
+|unite| https://github.com/Shougo/unite.vim.  It displays a searchable menu of
+relevant shortcuts when you begin inputting shortcut keys but pause partway
+because you forgot the rest of the keys or want to see all related shortcuts.
+You can then search within this menu by shortcut keys or their descriptions.
+
+Note: You need to install |unite| first, before using this plugin!
+
+------------------------------------------------------------------------------
+SETUP                                                           *shortcut-setup*
+------------------------------------------------------------------------------
+
+Call |shortcut#prefix| to specify a common prefix used by all of your shortcuts.
+
+To use a single 'space' key as the prefix for your shortcuts (like spacemacs):
+>
+	call shortcut#prefix('<Space>')
+
+Alternatively, you may specify a sequence of keys as the prefix, if you like:
+>
+	call shortcut#prefix('<Space><Backspace><Return>')
+
+Now that you have specified a prefix, define your shortcuts with |shortcut#map|.
+
+------------------------------------------------------------------------------
+USAGE                                                           *shortcut-usage*
+------------------------------------------------------------------------------
+
+Use |shortcut#map| to define your shortcuts.  For example, here are a few
+shortcuts from my |vimrc| https://github.com/sunaku/.vim/tree/spacey/shortcut:
+>
+	call shortcut#map('w O', 'Window -> Open above', 'aboveleft split')
+	call shortcut#map('w o', 'Window -> Open below', 'belowright split')
+	call shortcut#map('w i', 'Window -> Open left ', 'aboveleft vsplit')
+	call shortcut#map('w a', 'Window -> Open right', 'belowright vsplit')
+	call shortcut#map('w d', 'Window -> Close     ', 'close')
+
+If your shortcut's actions are too complex to be specified in a function call,
+you can specify them inside a separate |function| named by |shortcut#fun| instead:
+>
+	call shortcut#map(' x ', 'Your Shortcut Name Here')
+	function! Shortcut_your_shortcut_name_here() abort
+		" put your shortcut's complex actions here
+	endfunction
+
+------------------------------------------------------------------------------
+FUNCTIONS                                                       *shortcut-funcs*
+------------------------------------------------------------------------------
+
+shortcut#prefix(prefix)                                        *shortcut#prefix*
+		Establishes a common {prefix} for shortcuts defined by
+		|shortcut#map| and defines the default discovery fallback,
+		discovery trigger, and repetition shortcuts:
+
+	+----------------+---------------------+----------------------+
+	| Shortcut       | Purpose             | Name                 |
+	+----------------+---------------------+----------------------+
+	| prefix         | discovery fallback  | Shortcut -> Discover |
+	| prefix prefix  | discovery trigger   | Shortcut -> Discover |
+	| prefix .       | shortcut repetition | Shortcut -> Repeat   |
+	+----------------+---------------------+----------------------+
+
+shortcut#map({keys}, {name}, {...})                               *shortcut#map*
+		Binds {keys} to run {name} shortcut that in turn executes
+		{...} expressions, which may be (1) arbitrary lines in a Vim
+		function body, (2) "<Plug>" key bindings, or (3) the names of
+		other shortcuts defined by |shortcut#map|.
+
+		If no {...} expressions are given, the shortcut is configured
+		to execute an existing function named according to the
+		mangling rules defined by |shortcut#fun|.  Otherwise, such a
+		function is (re)defined using {...} as its function body.
+
+shortcut#run({name}, [mode])                                      *shortcut#run*
+		Runs {name} shortcut, optionally under [mode]: either "n" for
+		normal mode or "v" for visual mode. The latter (namely "v")
+		restores the visual selection on which the original shortcut
+		may have been triggered before {name} shortcut is executed.
+
+shortcut#fun({name})                                              *shortcut#fun*
+		Returns the name of the function that handles {name} shortcut
+		by making it lowercase, removing non-word characters, and
+		prefixing "Shortcut_".
+
+shortcut#repeat()                                              *shortcut#repeat*
+		Repeats the shortcut most recently executed by |shortcut#run|.
+
+shortcut#mode()                                                  *shortcut#mode*
+		Retuns the mode under which the current or the most recent
+		shortcut was run.
+
+ vim:tw=78:ts=8:ft=help:norl:
