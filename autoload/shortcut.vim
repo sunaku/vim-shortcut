@@ -22,7 +22,12 @@ endfunction
 
 " Binds `keys` to run `name` shortcut that in turn executes `...` expressions,
 " which may be (1) arbitrary lines in a Vim function body, (2) "<Plug>" key
-" bindings, or (3) the names of other shortcuts defined by shortcut#map().
+" bindings, or (3) the names of other shortcuts defined by `shortcut#fun()`.
+"
+" In particular, to distinguish the third case from arbitrary Vim expressions,
+" the names of other shortcuts specified to this function MUST contain ` -> `.
+" Since `shortcut#fun()` strips all non-word characters, this will not affect
+" the resulting function name that is computed: it simply aids identification.
 "
 " If no `...` expressions are given, the shortcut is configured to execute an
 " existing function named according to the mangling rules of `shortcut#fun()`.
@@ -39,7 +44,7 @@ function! shortcut#map(keys, name, ...) abort
   if a:0 > 0
     let body = []
     for line in a:000
-      if line =~ '->'
+      if line =~ ' -> '
         let line = 'call '. shortcut#fun(line) .'()'
       elseif line =~ '^\s*<Plug>\c'
         let line = 'normal '. substitute(line, '<Plug>\c', "\<Plug>", 'g')
