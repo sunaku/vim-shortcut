@@ -65,7 +65,7 @@ function! shortcut#run(name, ...) abort
   let handler = shortcut#fun(a:name)
 
   " remember the shortcut being run so that it can be repeated again next time
-  if handler =~ '^Shortcut_.\+_' " match nested namespaces; ignore top-level
+  if handler !~ '\v^Shortcut_(repeat|discover)$' " ignore prefix() shortcuts
     let s:repeat = a:name
   endif
 
