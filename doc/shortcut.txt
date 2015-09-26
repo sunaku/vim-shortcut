@@ -31,23 +31,25 @@ Alternatively, you may specify a sequence of keys as the prefix, if you like:
 >
 	call shortcut#prefix('<Space><Backspace><Return>')
 
-Now that you have specified a prefix, define your shortcuts with |shortcut#map|.
-
 ------------------------------------------------------------------------------
 USAGE                                                           *shortcut-usage*
 ------------------------------------------------------------------------------
 
-Use |shortcut#map| to define your shortcuts.  For example, here are a few
-shortcuts from my |vimrc| https://github.com/sunaku/.vim/tree/spacey/shortcut:
+Use |shortcut#def| to define your shortcuts and |shortcut#map| to bind them:
+>
+	call shortcut#def('Window -> Open above', 'aboveleft split')
+	call shortcut#map('w O', 'Window -> Open above')
+
+Alternatively, you can do all of the above in one shot using |shortcut#map|:
 >
 	call shortcut#map('w O', 'Window -> Open above', 'aboveleft split')
-	call shortcut#map('w o', 'Window -> Open below', 'belowright split')
-	call shortcut#map('w i', 'Window -> Open left ', 'aboveleft vsplit')
-	call shortcut#map('w a', 'Window -> Open right', 'belowright vsplit')
-	call shortcut#map('w d', 'Window -> Close     ', 'close')
 
-If your shortcut's actions are too complex to be specified in a function call,
-you can specify them inside a separate |function| named by |shortcut#fun| instead:
+For more real-life examples, browse the files in this folder of my |vimrc|:
+
+	https://github.com/sunaku/.vim/tree/spacey/shortcut
+
+Note: If your shortcut's logic is too complex to be specified in a function
+call, you can house it in a separate |function| named by |shortcut#fun| instead:
 >
 	call shortcut#map(' x ', 'Your Shortcut Name Here')
 	function! Shortcut_your_shortcut_name_here() abort
@@ -71,9 +73,9 @@ shortcut#prefix(prefix)                                        *shortcut#prefix*
 	| prefix .       | shortcut repetition | Shortcut -> Repeat   |
 	+----------------+---------------------+----------------------+
 
-shortcut#map({keys}, {name}, {...})                               *shortcut#map*
-		Binds {keys} to run {name} shortcut that in turn executes
-		{...} expressions, which may be (1) arbitrary lines in a Vim
+shortcut#def({name}, {...})                                       *shortcut#def*
+		Defines {name} shortcut to execute the {...} expressions,
+		which can be any combination of (1) arbitrary lines in a Vim
 		function body, (2) "<Plug>" key bindings, or (3) the names of
 		other shortcuts defined by |shortcut#fun|.
 
@@ -87,6 +89,10 @@ shortcut#map({keys}, {name}, {...})                               *shortcut#map*
 		to execute an existing function named according to the
 		mangling rules defined by |shortcut#fun|.  Otherwise, such a
 		function is (re)defined using {...} as its function body.
+
+shortcut#map({keys}, {name}, [...])                               *shortcut#map*
+		Binds {keys} to run {name} shortcut, optionally defined by
+		[...] expressions which are passed down to |shortcut#def|.
 
 shortcut#run({name}, [mode])                                      *shortcut#run*
 		Runs {name} shortcut, optionally under [mode]: either "n" for

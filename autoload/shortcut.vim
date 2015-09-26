@@ -20,8 +20,20 @@ function! shortcut#prefix(prefix) abort
   call shortcut#map(s:prefix,  'Shortcut -> Discover')
 endfunction
 
-" Binds `keys` to run `name` shortcut that in turn executes `...` expressions,
-" which may be (1) arbitrary lines in a Vim function body, (2) "<Plug>" key
+" Binds `keys` to run `name` shortcut, optionally defined by `...` expressions
+" which are passed down to `shortcut#def()`.
+"
+" Usage: shortcut#map(keys, shortcut-name, [shortcut-definition]...)
+"
+function! shortcut#map(keys, name, ...) abort
+  let keys = s:prefix . substitute(a:keys, '\s\+', '', 'g')
+  execute 'nnoremap <silent> '. keys .' :call shortcut#run("'. a:name .'", "n")<CR>'
+  execute 'vnoremap <silent> '. keys .' :<C-U>call shortcut#run("'. a:name .'", "v")<CR>'
+  call call('shortcut#def', insert(copy(a:000), a:name))
+endfunction
+
+" Defines `name` shortcut to execute the `...` expressions, which can be any
+" combination of (1) arbitrary lines in a Vim function body, (2) "<Plug>" key
 " bindings, or (3) the names of other shortcuts defined by `shortcut#fun()`.
 "
 " In particular, to distinguish the third case from arbitrary Vim expressions,
@@ -33,14 +45,9 @@ endfunction
 " existing function named according to the mangling rules of `shortcut#fun()`.
 " Otherwise, such a function is (re)defined using `...` as its function body.
 "
-" Usage: shortcut#map(keys, shortcut-name, [expression|plug|shortcut-name]...)
+" Usage: shortcut#def(shortcut-name, [expression|plug|shortcut-name]...)
 "
-function! shortcut#map(keys, name, ...) abort
-  let keys = s:prefix . substitute(a:keys, '\s\+', '', 'g')
-  execute 'nnoremap <silent> '. keys .' :call shortcut#run("'. a:name .'", "n")<CR>'
-  execute 'vnoremap <silent> '. keys .' :<C-U>call shortcut#run("'. a:name .'", "v")<CR>'
-
-  " define handler function using the provided function body expressions
+function! shortcut#def(name, ...) abort
   if a:0 > 0
     let body = []
     for line in a:000

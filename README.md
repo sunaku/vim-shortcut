@@ -32,19 +32,24 @@ Now that you have specified a prefix, define your shortcuts with `shortcut#map`.
 
 ## Usage
 
-Use `shortcut#map` to define your shortcuts.  For example, here are a few
-shortcuts from my vimrc <https://github.com/sunaku/.vim/tree/spacey/shortcut>:
+Use `shortcut#def` to define your shortcuts and `shortcut#map` to bind them:
+
+```vim
+call shortcut#def('Window -> Open above', 'aboveleft split')
+call shortcut#map('w O', 'Window -> Open above')
+```
+
+Alternatively, you can do all of the above in one shot using `shortcut#map`:
 
 ```vim
 call shortcut#map('w O', 'Window -> Open above', 'aboveleft split')
-call shortcut#map('w o', 'Window -> Open below', 'belowright split')
-call shortcut#map('w i', 'Window -> Open left ', 'aboveleft vsplit')
-call shortcut#map('w a', 'Window -> Open right', 'belowright vsplit')
-call shortcut#map('w d', 'Window -> Close     ', 'close')
 ```
 
-If your shortcut's actions are too complex to be specified in a function call,
-you can specify them inside a separate function named by `shortcut#fun` instead:
+For more real-life examples, [browse the files in this folder of my `vimrc`](
+https://github.com/sunaku/.vim/tree/spacey/shortcut ).
+
+**Note:** If your shortcut's logic is too complex to be specified in a function
+call, you can house it in a separate function named by `shortcut#fun` instead:
 
 ```vim
 call shortcut#map(' x ', 'Your Shortcut Name Here')
