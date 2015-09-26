@@ -2,31 +2,13 @@
 " Autoloaded functions that define the core of the Shortcut plugin's library.
 "-----------------------------------------------------------------------------
 
-" Establishes a common `prefix` for shortcuts defined by `shortcut#map()` and
-" defines the discovery fallback, discovery trigger, and repetition shortcuts:
-"
-"   +----------------+---------------------+----------------------+
-"   | Shortcut       | Purpose             | Name                 |
-"   +----------------+---------------------+----------------------+
-"   | prefix         | discovery fallback  | Shortcut -> Discover |
-"   | prefix prefix  | discovery trigger   | Shortcut -> Discover |
-"   | prefix .       | shortcut repetition | Shortcut -> Repeat   |
-"   +----------------+---------------------+----------------------+
-"
-function! shortcut#prefix(prefix) abort
-  let s:prefix = a:prefix
-  call shortcut#map('.', 'Shortcut -> Repeat', 'call shortcut#repeat()')
-  call shortcut#map('', 'Shortcut -> Discover', 'Unite shortcut')
-  call shortcut#map(s:prefix,  'Shortcut -> Discover')
-endfunction
-
 " Binds `keys` to run `name` shortcut, optionally defined by `...` expressions
 " which are passed down to `shortcut#def()`.
 "
 " Usage: shortcut#map(keys, shortcut-name, [shortcut-definition]...)
 "
 function! shortcut#map(keys, name, ...) abort
-  let keys = s:prefix . substitute(a:keys, '\s\+', '', 'g')
+  let keys = substitute(a:keys, '\s\+', '', 'g')
   execute 'nnoremap <silent> '. keys .' :call shortcut#run("'. a:name .'", "n")<CR>'
   execute 'vnoremap <silent> '. keys .' :<C-U>call shortcut#run("'. a:name .'", "v")<CR>'
   call call('shortcut#def', insert(copy(a:000), a:name))
@@ -77,7 +59,7 @@ function! shortcut#run(name, ...) abort
   let handler = shortcut#fun(a:name)
 
   " remember the shortcut being run so that it can be repeated again next time
-  if handler !~ '\v^Shortcut_(repeat|discover)$' " ignore prefix() shortcuts
+  if handler !~ '\v^Shortcut_(discover|repeat)$' " excluding default shortcuts
     let s:repeat = a:name
   endif
 

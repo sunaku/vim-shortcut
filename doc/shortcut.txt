@@ -21,15 +21,18 @@ Note: You need to install |unite| first, before using this plugin!
 SETUP                                                           *shortcut-setup*
 ------------------------------------------------------------------------------
 
-Call |shortcut#prefix| to specify a common prefix used by all of your shortcuts.
-
-To use a single 'space' key as the prefix for your shortcuts (like spacemacs):
+I recommend that you map the provided |shortcut-def| default shortcuts like this
+(feel free to change the <Space> key to whatever you like as a common prefix):
 >
-	call shortcut#prefix('<Space>')
+	call shortcut#map('<Space>        ', 'Shortcut -> Discover') " fallback
+	call shortcut#map('<Space> <Space>', 'Shortcut -> Discover') " trigger
+	call shortcut#map('<Space> .      ', 'Shortcut -> Repeat')   " repeat
 
-Alternatively, you may specify a sequence of keys as the prefix, if you like:
->
-	call shortcut#prefix('<Space><Backspace><Return>')
+The "fallback" mapping assumes that all other shortcuts are prefixed with the
+same keys it uses (shown as <Space> above).  However, this assumption is not
+enforced because it might be useful to map shortcuts with uncommon prefixes
+when you know them by heart and thus feel a fallback isn't necessary for you.
+As a result, you can map any keys to any shortcut, regardless of the prefix!
 
 ------------------------------------------------------------------------------
 USAGE                                                           *shortcut-usage*
@@ -38,11 +41,11 @@ USAGE                                                           *shortcut-usage*
 Use |shortcut#def| to define your shortcuts and |shortcut#map| to bind them:
 >
 	call shortcut#def('Window -> Open above', 'aboveleft split')
-	call shortcut#map('w O', 'Window -> Open above')
+	call shortcut#map('<Space> w O', 'Window -> Open above')
 
 Alternatively, you can do all of the above in one shot using |shortcut#map|:
 >
-	call shortcut#map('w O', 'Window -> Open above', 'aboveleft split')
+	call shortcut#map('<Space> w O', 'Window -> Open above', 'aboveleft split')
 
 For more real-life examples, browse the files in this folder of my |vimrc|:
 
@@ -51,27 +54,25 @@ For more real-life examples, browse the files in this folder of my |vimrc|:
 Note: If your shortcut's logic is too complex to be specified in a function
 call, you can house it in a separate |function| named by |shortcut#fun| instead:
 >
-	call shortcut#map(' x ', 'Your Shortcut Name Here')
+	call shortcut#map('<Space> a b c', 'Your Shortcut Name Here')
 	function! Shortcut_your_shortcut_name_here() abort
 		" put your shortcut's complex actions here
 	endfunction
 
 ------------------------------------------------------------------------------
-FUNCTIONS                                                       *shortcut-funcs*
+SHORTCUTS                                                         *shortcut-def*
 ------------------------------------------------------------------------------
 
-shortcut#prefix(prefix)                                        *shortcut#prefix*
-		Establishes a common {prefix} for shortcuts defined by
-		|shortcut#map| and defines the default discovery fallback,
-		discovery trigger, and repetition shortcuts:
+Shortcut_discover()                                          *Shortcut_discover*
+		Launches a |unite| menu using the `shortcut` source, which lets
+		you interactively search for and execute a chosen shortcut.
 
-	+----------------+---------------------+----------------------+
-	| Shortcut       | Purpose             | Name                 |
-	+----------------+---------------------+----------------------+
-	| prefix         | discovery fallback  | Shortcut -> Discover |
-	| prefix prefix  | discovery trigger   | Shortcut -> Discover |
-	| prefix .       | shortcut repetition | Shortcut -> Repeat   |
-	+----------------+---------------------+----------------------+
+Shortcut_repeat()                                              *Shortcut_repeat*
+		Runs |shortcut#repeat|.
+
+------------------------------------------------------------------------------
+FUNCTIONS                                                         *shortcut-api*
+------------------------------------------------------------------------------
 
 shortcut#def({name}, {...})                                       *shortcut#def*
 		Defines {name} shortcut to execute the {...} expressions,
