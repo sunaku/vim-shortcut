@@ -90,7 +90,7 @@ function! shortcut#run(name, ...) abort
   endif
 
   " restore the visual text selection upon which this shortcut was triggered
-  if s:mode == 'v'
+  if shortcut#mode() == 'v'
     normal! gv
   endif
 
@@ -116,5 +116,9 @@ endfunction
 
 " Retuns the mode under which the current or most recent shortcut was run.
 function! shortcut#mode() abort
-  return s:mode
+  if exists('s:mode')
+    return s:mode
+  else
+    return mode()
+  endif
 endfunction
