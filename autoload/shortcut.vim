@@ -11,7 +11,9 @@ function! shortcut#map(keys, name, ...) abort
   let keys = substitute(a:keys, '\s\+', '', 'g')
   execute 'nnoremap <silent> '. keys .' :call shortcut#run("'. a:name .'", "n")<CR>'
   execute 'vnoremap <silent> '. keys .' :<C-U>call shortcut#run("'. a:name .'", "v")<CR>'
-  call call('shortcut#def', insert(copy(a:000), a:name))
+  if a:0 > 0
+    call call('shortcut#def', insert(copy(a:000), a:name))
+  endif
 endfunction
 
 " Defines `name` shortcut to execute the `...` expressions, which can be any
