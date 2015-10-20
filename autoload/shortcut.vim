@@ -9,7 +9,7 @@
 "
 function! shortcut#map(keys, name, ...) abort
   let keys = substitute(a:keys, '\s\+', '', 'g')
-  execute 'nnoremap <silent> '. keys .' :call shortcut#run("'. a:name .'", "n")<CR>'
+  execute 'nnoremap <silent> '. keys .' :<C-U>call shortcut#run("'. a:name .'", "n")<CR>'
   execute 'vnoremap <silent> '. keys .' :<C-U>call shortcut#run("'. a:name .'", "v")<CR>'
   if a:0 > 0
     call call('shortcut#def', insert(copy(a:000), a:name))
@@ -61,7 +61,9 @@ function! shortcut#run(name, ...) abort
   let handler = shortcut#fun(a:name)
 
   " remember the shortcut being run so that it can be repeated again next time
-  if handler !~ '\v^Shortcut_(discover|repeat)$' " excluding default shortcuts
+  " ... but ignore default shortcuts and re-entrant shortcuts (part of others)
+  let is_top = expand('<sfile>') == 'function shortcut#run'
+  if handler !~ '\v^Shortcut_(discover|repeat)$' && is_top
     let s:repeat = a:name
   endif
 
@@ -78,7 +80,10 @@ function! shortcut#run(name, ...) abort
     normal! gv
   endif
 
-  execute 'call '. handler .'()'
+  " run the handler (and repeat according to the specified repetition count)
+  for _ in range(is_top ? v:count1 : 1)
+    call call(handler, [])
+  endfor
 endfunction
 
 " Returns the name of the function that handles `name` shortcut by making

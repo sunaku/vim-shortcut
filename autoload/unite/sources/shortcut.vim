@@ -17,7 +17,7 @@ let s:source = extend(copy(s:parent), {
       \ 'description' : 'candidates from shortcuts',
       \ })
 
-let s:regexp = '\v^...(\S+\s+)\* :(call shortcut#run\((.)\s*(.+)\s*\3), \3.\3\)\<.+\>$'
+let s:regexp = '\v^...(\S+\s+)\* :\<C-U\>(call shortcut#run\("\s*(.+)\s*"),.+$'
 
 function! s:source.gather_candidates(args, context) "{{{
   let result = []
@@ -26,7 +26,7 @@ function! s:source.gather_candidates(args, context) "{{{
       let shortcut = copy(candidate)
 
       " simplify :map output down to the shortcut keys and their descriptions
-      let shortcut.word = substitute(candidate.word, s:regexp, '\1\t\4', '')
+      let shortcut.word = substitute(candidate.word, s:regexp, '\1\t\3', '')
 
       " deliberately omit the mode (second argument) from the shortcut#run()
       " call so that the mode in which the initial shortcut (which in/directly
