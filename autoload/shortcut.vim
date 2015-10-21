@@ -9,7 +9,7 @@
 "
 function! shortcut#map(keys, name, ...) abort
   let keys = substitute(a:keys, '\s\+', '', 'g')
-  execute 'nnoremap <silent> '. keys .' :<C-U>call shortcut#run("'. a:name .'", "n")<CR>'
+  execute 'nnoremap <silent> '. keys .' :<Home>call shortcut#run("'. a:name .'", "n", "<End>")<CR>'
   execute 'vnoremap <silent> '. keys .' :<C-U>call shortcut#run("'. a:name .'", "v")<CR>'
   if a:0 > 0
     call call('shortcut#def', insert(copy(a:000), a:name))
@@ -50,11 +50,14 @@ function! shortcut#def(name, ...) abort
   endif
 endfunction
 
-" Runs `name` shortcut, optionally under a mode: normal ("n") or visual ("v").
+" Runs `name` shortcut, optionally under `mode`: normal ("n") or visual ("v").
 " The latter, namely visual ("v") mode, restores the visual selection on which
 " the original shortcut may have triggered before `name` shortcut is executed.
 "
-" Usage: shortcut#run(shortcut-name, [vim-mode])
+" In addition, the optional `range` specifies which lines the `name` shortcut
+" should operate on.  If invalid (E16), it is treated as a repetition count.
+"
+" Usage: shortcut#run(shortcut-name, [mode], [range])
 "
 function! shortcut#run(name, ...) abort
   " map the shortcut name to its corresponding handler function
@@ -80,10 +83,23 @@ function! shortcut#run(name, ...) abort
     normal! gv
   endif
 
-  " run the handler (and repeat according to the specified repetition count)
-  for _ in range(is_top ? v:count1 : 1)
+  " run the handler on each line in the specified range
+  if a:0 > 1 && !empty(a:2)
+    try
+      execute a:2 . 'call' handler . '()'
+      return
+    catch /^Vim\%((\a\+)\)\=:E16/
+      " fall through to the repetition processing below
+    endtry
+  endif
+
+  " run the handler, repeating according to the specified repetition count
+  let l:count = is_top ? v:count1 : 1
+  while l:count > 0
     call call(handler, [])
-  endfor
+    let l:count = l:count - 1
+  endwhile
+
 endfunction
 
 " Returns the name of the function that handles `name` shortcut by making

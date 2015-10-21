@@ -17,7 +17,7 @@ let s:source = extend(copy(s:parent), {
       \ 'description' : 'candidates from shortcuts',
       \ })
 
-let s:regexp = '\v^...(\S+\s+)\* :\<C-U\>(call shortcut#run\("\s*(.+)\s*"),.+$'
+let s:regexp = '\v^...(\S+\s+)\* :.*(call shortcut#run\("\s*(.{-})\s*"),.+$'
 
 function! s:source.gather_candidates(args, context) "{{{
   let result = []

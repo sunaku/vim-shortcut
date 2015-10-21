@@ -95,11 +95,15 @@ shortcut#map({keys}, {name}, [...])                               *shortcut#map*
 		Binds {keys} to run {name} shortcut, optionally defined by
 		[...] expressions which are passed down to |shortcut#def|.
 
-shortcut#run({name}, [mode])                                      *shortcut#run*
+shortcut#run({name}, [mode], [range])                             *shortcut#run*
 		Runs {name} shortcut, optionally under [mode]: either "n" for
 		normal mode or "v" for visual mode. The latter (namely "v")
 		restores the visual selection on which the original shortcut
 		may have been triggered before {name} shortcut is executed.
+
+		In addition, the optional [range] specifies which lines the
+		{name} shortcut should operate on.  If it is invalid (|E16|),
+		then it will be treated as a simple repetition |count| instead.
 
 shortcut#fun({name})                                              *shortcut#fun*
 		Returns the name of the function that handles {name} shortcut
