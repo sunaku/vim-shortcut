@@ -6,7 +6,7 @@ relevant shortcuts when you begin typing a shortcut but suddenly pause, say,
 because you forgot the remaining keys or maybe just to see what is available.
 You can then filter the menu choices by typing shortcut keys or descriptions.
 
-![Screencast](https://github.com/sunaku/vim-shortcut/raw/master/README.gif)
+![Screencast](https://github.com/sunaku/vim-shortcut/raw/gh-pages/README.gif)
 
 ## Requirements
 
