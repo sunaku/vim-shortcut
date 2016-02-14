@@ -1,32 +1,32 @@
-*shortcut.vim*   Discoverable shortcuts inspired by spacemacs, powered by |unite|.
+*shortcut.vim*   Discoverable shortcut system for Vim, inspired by Spacemacs.
 
 Author:   Suraj N. Kurapati <github.com/sunaku>
 License:  Same terms as Vim itself (see |license|)
 Homepage: https://github.com/sunaku/vim-shortcut
 
 ------------------------------------------------------------------------------
-INTRODUCTION                                                    *shortcut-intro*
+INTRODUCTION                                                  *shortcut-intro*
 ------------------------------------------------------------------------------
 
-This plugin provides a discoverable shortcut system for Vim that was inspired
-by spacemacs https://github.com/syl20bnr/spacemacs#readme and is powered by
-|unite| https://github.com/Shougo/unite.vim.  It displays a searchable menu of
-relevant shortcuts when you begin inputting shortcut keys but pause partway
-because you forgot the rest of the keys or want to see all related shortcuts.
-You can then search within this menu by shortcut keys or their descriptions.
+This plugin provides a discoverable shortcut system for Vim that is inspired
+by Emacs' Spacemacs http://spacemacs.org plugin and powered by Vim's |unite|
+https://github.com/Shougo/unite.vim plugin.  It opens a searchable menu of
+relevant shortcuts when you begin typing a shortcut but suddenly pause, say,
+because you forgot the remaining keys or maybe just to see what is available.
+You can then filter the menu choices by typing shortcut keys or descriptions.
 
 Note: You need to install |unite| first, before using this plugin!
 
 ------------------------------------------------------------------------------
-SETUP                                                           *shortcut-setup*
+SETUP                                                         *shortcut-setup*
 ------------------------------------------------------------------------------
 
-I recommend that you map the provided |shortcut-def| default shortcuts like this
+I recommend that you map the provided |shortcut-def| default shortcuts like so
 (feel free to change the <Space> key to whatever you like as a common prefix):
 >
-	call shortcut#map('<Space>        ', 'Shortcut -> Discover') " fallback
-	call shortcut#map('<Space> <Space>', 'Shortcut -> Discover') " trigger
-	call shortcut#map('<Space> .      ', 'Shortcut -> Repeat')   " repeat
+	call shortcut#map('<Space>        ', 'Shortcut -> Discover') "fallback
+	call shortcut#map('<Space> <Space>', 'Shortcut -> Discover') "trigger
+	call shortcut#map('<Space> .      ', 'Shortcut -> Repeat')   "repeat
 
 The "fallback" mapping assumes that all other shortcuts are prefixed with the
 same keys it uses (shown as <Space> above).  However, this assumption is not
@@ -35,7 +35,7 @@ when you know them by heart and thus feel a fallback isn't necessary for you.
 As a result, you can map any keys to any shortcut, regardless of the prefix!
 
 ------------------------------------------------------------------------------
-USAGE                                                           *shortcut-usage*
+USAGE                                                         *shortcut-usage*
 ------------------------------------------------------------------------------
 
 Use |shortcut#def| to define your shortcuts and |shortcut#map| to bind them:
@@ -51,8 +51,8 @@ For more real-life examples, browse the files in this folder of my |vimrc|:
 
 	https://github.com/sunaku/.vim/tree/spacey/shortcut
 
-Note: If your shortcut's logic is too complex to be specified in a function
-call, you can house it in a separate |function| named by |shortcut#fun| instead:
+Note: If your shortcut's logic is too complex to be placed in a function call,
+you can place it inside a separate function named according to |shortcut#fun|:
 >
 	call shortcut#map('<Space> a b c', 'Your Shortcut Name Here')
 	function! Shortcut_your_shortcut_name_here() abort
@@ -60,21 +60,21 @@ call, you can house it in a separate |function| named by |shortcut#fun| instead:
 	endfunction
 
 ------------------------------------------------------------------------------
-SHORTCUTS                                                         *shortcut-def*
+SHORTCUTS                                                       *shortcut-def*
 ------------------------------------------------------------------------------
 
-Shortcut_discover()                                          *Shortcut_discover*
-		Launches a |unite| menu using the `shortcut` source, which lets
+Shortcut_discover()                                        *Shortcut_discover*
+		Opens a |unite| menu using the `shortcut` source, which lets
 		you interactively search for and execute a chosen shortcut.
 
-Shortcut_repeat()                                              *Shortcut_repeat*
+Shortcut_repeat()                                            *Shortcut_repeat*
 		Runs |shortcut#repeat|.
 
 ------------------------------------------------------------------------------
-FUNCTIONS                                                         *shortcut-api*
+FUNCTIONS                                                       *shortcut-api*
 ------------------------------------------------------------------------------
 
-shortcut#def({name}, {...})                                       *shortcut#def*
+shortcut#def({name}, {...})                                     *shortcut#def*
 		Defines {name} shortcut to execute the {...} expressions,
 		which can be any combination of (1) arbitrary lines in a Vim
 		function body, (2) "<Plug>" key bindings, or (3) the names of
@@ -82,8 +82,8 @@ shortcut#def({name}, {...})                                       *shortcut#def*
 
 		In particular, to distinguish the third case from arbitrary
 		Vim expressions, the names of other shortcuts specified to
-		this function MUST contain " -> ".  Since |shortcut#fun| strips
-		all non-word characters, this will not affect the resulting
+		this function MUST contain " -> ".  Note: Since |shortcut#fun|
+		strips non-word characters, this will not affect the resulting
 		function name that is computed: it simply aids identification.
 
 		If no {...} expressions are given, the shortcut is configured
@@ -91,11 +91,11 @@ shortcut#def({name}, {...})                                       *shortcut#def*
 		mangling rules defined by |shortcut#fun|.  Otherwise, such a
 		function is (re)defined using {...} as its function body.
 
-shortcut#map({keys}, {name}, [...])                               *shortcut#map*
+shortcut#map({keys}, {name}, [...])                             *shortcut#map*
 		Binds {keys} to run {name} shortcut, optionally defined by
 		[...] expressions which are passed down to |shortcut#def|.
 
-shortcut#run({name}, [mode], [range])                             *shortcut#run*
+shortcut#run({name}, [mode], [range])                           *shortcut#run*
 		Runs {name} shortcut, optionally under [mode]: either "n" for
 		normal mode or "v" for visual mode. The latter (namely "v")
 		restores the visual selection on which the original shortcut
@@ -103,17 +103,17 @@ shortcut#run({name}, [mode], [range])                             *shortcut#run*
 
 		In addition, the optional [range] specifies which lines the
 		{name} shortcut should operate on.  If it is invalid (|E16|),
-		then it will be treated as a simple repetition |count| instead.
+		then it is treated as a simple repetition |count| instead.
 
-shortcut#fun({name})                                              *shortcut#fun*
+shortcut#fun({name})                                            *shortcut#fun*
 		Returns the name of the function that handles {name} shortcut
 		by making it lowercase, removing non-word characters, and
 		prefixing "Shortcut_".
 
-shortcut#repeat()                                              *shortcut#repeat*
+shortcut#repeat()                                            *shortcut#repeat*
 		Repeats the shortcut most recently executed by |shortcut#run|.
 
-shortcut#mode()                                                  *shortcut#mode*
+shortcut#mode()                                                *shortcut#mode*
 		Retuns the mode under which the current or the most recent
 		shortcut was run.
 
