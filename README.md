@@ -61,6 +61,17 @@ endfunction
 
 Run `:help shortcut` or see the `doc/shortcut.txt` file.
 
+## Testing
+
+Developers can run the [vim-spec] tests:
+[vim-spec]: https://github.com/kana/vim-vspec
+
+```sh
+gem install bundler         # first time
+bundle install              # first time
+bundle exec vim-flavor test # every time
+```
+
 ## License
 
 Copyright 2015 Suraj N. Kurapati <https://github.com/sunaku>
