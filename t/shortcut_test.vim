@@ -65,11 +65,11 @@ end
 
 describe 'ShortcutParseDescribeCommand()'
   it 'throws an error if the shortcut is not given'
-    call AssertException(function('ShortcutParseDescribeCommand'), [''])
+    Expect expr { ShortcutParseDescribeCommand('') } to_throw
   end
 
   it 'throws an error if the description is not given'
-    call AssertException(function('ShortcutParseDescribeCommand'), ['x'])
+    Expect expr { ShortcutParseDescribeCommand('x') } to_throw
   end
 
   it 'parses description and shortcut; not definition'
@@ -102,11 +102,11 @@ end
 
 describe 'ShortcutParseDefineCommand()'
   it 'throws error if "map" directive is not given'
-    call AssertException(function('ShortcutParseDefineCommand'), [''])
-    call AssertException(function('ShortcutParseDefineCommand'), ['x'])
-    call AssertException(function('ShortcutParseDefineCommand'), ['x map'])
-    call AssertException(function('ShortcutParseDefineCommand'), ['x map y'])
-    call RefuteException(function('ShortcutParseDefineCommand'), ['x map y z'])
+    Expect expr { ShortcutParseDefineCommand('') } to_throw
+    Expect expr { ShortcutParseDefineCommand('x') } to_throw
+    Expect expr { ShortcutParseDefineCommand('x map') } to_throw
+    Expect expr { ShortcutParseDefineCommand('x map y') } to_throw
+    Expect ShortcutParseDefineCommand('x map y z') == ['y', 'x', 'map y z']
   end
 
   it 'parses description, shortcut, and definition'
@@ -127,23 +127,3 @@ describe 'ShortcutParseDefineCommand()'
           \ == ['shortcut', 'description', definition]
   endfunction
 end
-
-function! AssertException(Funcref, arguments) abort
-  let exception = CaptureException(a:Funcref, a:arguments)
-  Expect exception != -1
-  return exception
-endfunction
-
-function! RefuteException(Funcref, arguments) abort
-  let exception = CaptureException(a:Funcref, a:arguments)
-  Expect exception == -1
-endfunction
-
-function! CaptureException(Funcref, arguments) abort
-  try
-    call call(a:Funcref, a:arguments)
-  catch
-    return v:exception
-  endtry
-  return -1
-endfunction
