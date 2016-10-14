@@ -32,6 +32,22 @@ This style uses prefix commands to gather information about your shortcuts:
 
 * Use the `Shortcut!` prefix, with a bang, to describe existing shortcuts.
 
+I recommend that you define these two shortcuts for discovery and fallback
+(feel free to change the `<Leader>` key to your own commonly used prefix):
+
+```vim
+Shortcut show shortcut menu and run chosen shortcut
+      \ noremap <silent> <Leader><Leader> :Shortcuts<Return>
+
+Shortcut fallback to shortcut menu on partial entry
+      \ noremap <silent> <Leader> :Shortcuts<Return>
+```
+
+The fallback shortcut should be the common prefix used by your other shortcuts
+so that you can automatically access the shortcut menu when you pause partway
+while typing a shortcut, say, because you forgot the rest of it or because you
+just want to see the shortcut menu again to discover what else is available.
+
 #### Defining new shortcuts
 
 Simply prefix any existing `map` command with `Shortcut` and a description.
