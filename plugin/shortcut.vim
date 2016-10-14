@@ -11,9 +11,10 @@ if !exists('g:shortcuts')
   let g:shortcuts = {}
 endif
 
-command! -bang Shortcuts call s:shortcut_menu_command(<bang>0)
+command! -range -bang Shortcuts <line1>,<line2>call s:shortcut_menu_command(<bang>0)
 
-function! s:shortcut_menu_command(fullscreen) abort
+function! s:shortcut_menu_command(fullscreen) range abort
+  let s:is_from_visual = a:firstline == line("'<") && a:lastline == line("'>")
   call fzf#run(fzf#wrap('Shortcuts', {
         \ 'source': s:shortcut_menu_items(),
         \ 'sink': function('s:shortcut_menu_item_action')
@@ -28,6 +29,11 @@ endfunction
 function! s:shortcut_menu_item_action(choice) abort
   let shortcut = substitute(a:choice, '\s.*', '', '')
   let keystrokes = ShortcutKeystrokes(shortcut)
+  if s:is_from_visual
+    normal! gv
+  elseif v:count
+    call feedkeys(v:count, 'n')
+  endif
   call feedkeys(keystrokes)
 endfunction
 
