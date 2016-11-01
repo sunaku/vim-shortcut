@@ -29,9 +29,9 @@ Support for old style usage will be removed in the next major 2.x.x release.
 
 This style uses prefix commands to gather information about your shortcuts:
 
-* Use the `Shortcut` prefix, without a bang, to define new shortcuts.
-
 * Use the `Shortcut!` prefix, with a bang, to describe existing shortcuts.
+
+* Use the `Shortcut` prefix, without a bang, to define brand new shortcuts.
 
 I recommend that you define these two shortcuts for discovery and fallback
 (feel free to change the `<Leader>` key to your own commonly used prefix):
@@ -48,6 +48,25 @@ The fallback shortcut should be the common prefix used by your other shortcuts
 so that you can automatically access the shortcut menu when you pause partway
 while typing a shortcut, say, because you forgot the rest of it or because you
 just want to see the shortcut menu again to discover what else is available.
+
+#### Describing existing shortcuts
+
+Use `Shortcut!` with a bang to describe shortcuts that are already defined:
+
+```vim
+Shortcut! keys description
+```
+
+For more examples, [see my vimrc](
+https://github.com/sunaku/.vim/blob/dvorak/bundle/motion/unimpaired.vim
+):
+
+```vim
+Shortcut! [f       go to previous file in current file's directory
+Shortcut! ]f       go to next     file in current file's directory
+```
+
+Any extra whitespace is ignored.
 
 #### Defining new shortcuts
 
@@ -106,25 +125,6 @@ Shortcut comment-out using FIGlet ASCII art decoration
 function! CommentUsingFIGlet()
   " ...
 endfunction
-```
-
-Any extra whitespace is ignored.
-
-#### Describing existing shortcuts
-
-Use `Shortcut!` with a bang to describe shortcuts that are already defined:
-
-```vim
-Shortcut! keys description
-```
-
-For more examples, [see my vimrc](
-https://github.com/sunaku/.vim/blob/dvorak/bundle/motion/unimpaired.vim
-):
-
-```vim
-Shortcut! [f       go to previous file in current file's directory
-Shortcut! ]f       go to next     file in current file's directory
 ```
 
 Any extra whitespace is ignored.
