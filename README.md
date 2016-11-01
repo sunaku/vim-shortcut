@@ -1,10 +1,11 @@
 # shortcut.vim
 
 This plugin provides a _discoverable_ shortcut system for Vim that is inspired
-by [Spacemacs] and powered by [FZF] or [Unite].  It presents a searchable
-menu of shortcuts when you begin typing a shortcut but suddenly pause, say,
-because you forgot the remaining keys or maybe just to see what is available.
-You can then filter the menu choices by typing shortcut keys or descriptions.
+by [Spacemacs] and powered by [FZF] or [Unite].  It pops up a searchable menu
+of shortcuts when you pause partway while typing a shortcut, say, because you
+forgot the rest of it or because you just want to see the shortcut menu again
+to discover what else is available.  You can interactively filter the menu by
+typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 
 ![Screencast](https://github.com/sunaku/vim-shortcut/raw/gh-pages/README.gif)
 
