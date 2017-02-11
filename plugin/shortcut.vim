@@ -13,11 +13,30 @@ endif
 
 command! -range -bang Shortcuts <line1>,<line2>call s:shortcut_menu_command(<bang>0)
 
+" Vim does not automatically propagate unmatched
+" typeahead characters the user might have typed
+" after the fallback shortcut has been triggered
+" so this is a workaround to grab that typeahead
+" by Junegunn Choi <https://github.com/junegunn>
+" https://github.com/junegunn/fzf.vim/issues/307
+function! s:typeahead()
+  let chars = ''
+  while 1
+    let c = getchar(0)
+    if c == 0
+      break
+    endif
+    let chars .= nr2char(c)
+  endwhile
+  return chars
+endfunction
+
 function! s:shortcut_menu_command(fullscreen) range abort
   let s:is_from_visual = a:firstline == line("'<") && a:lastline == line("'>")
   call fzf#run(fzf#wrap('Shortcuts', {
         \ 'source': s:shortcut_menu_items(),
-        \ 'sink': function('s:shortcut_menu_item_action')
+        \ 'sink': function('s:shortcut_menu_item_action'),
+        \ 'options': has('nvim') ? '' : '--query=' . shellescape(s:typeahead())
         \ }, a:fullscreen))
 endfunction
 
