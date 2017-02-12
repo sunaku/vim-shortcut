@@ -9,112 +9,119 @@ INTRODUCTION                                                  *shortcut-intro*
 ------------------------------------------------------------------------------
 
 This plugin provides a discoverable shortcut system for Vim that is inspired
-by Emacs' Spacemacs http://spacemacs.org plugin and powered by Vim's |unite|
-https://github.com/Shougo/unite.vim plugin.  It opens a searchable menu of
-relevant shortcuts when you begin typing a shortcut but suddenly pause, say,
-because you forgot the remaining keys or maybe just to see what is available.
-You can then filter the menu choices by typing shortcut keys or descriptions.
-
-Note: You need to install |unite| first, before using this plugin!
-
-------------------------------------------------------------------------------
-SETUP                                                         *shortcut-setup*
-------------------------------------------------------------------------------
-
-I recommend that you map the provided |shortcut-def| default shortcuts like so
-(feel free to change the <Space> key to whatever you like as a common prefix):
->
-	call shortcut#map('<Space>        ', 'Shortcut -> Discover') "fallback
-	call shortcut#map('<Space> <Space>', 'Shortcut -> Discover') "trigger
-	call shortcut#map('<Space> .      ', 'Shortcut -> Repeat')   "repeat
-
-The "fallback" mapping assumes that all other shortcuts are prefixed with the
-same keys it uses (shown as <Space> above).  However, this assumption is not
-enforced because it might be useful to map shortcuts with uncommon prefixes
-when you know them by heart and thus feel a fallback isn't necessary for you.
-As a result, you can map any keys to any shortcut, regardless of the prefix!
+by Emacs' Spacemacs http://spacemacs.org plugin and powered by Vim's |fzf-vim|
+https://github.com/junegunn/fzf.vim plugin.  It displays a searchable menu of
+shortcuts when you pause partway while typing a shortcut, say, because you
+forgot the rest of it or because you just want to see the shortcut menu again
+to discover what else is available.  You can interactively filter the menu by
+typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 
 ------------------------------------------------------------------------------
 USAGE                                                         *shortcut-usage*
 ------------------------------------------------------------------------------
 
-Use |shortcut#def| to define your shortcuts and |shortcut#map| to bind them:
+* Use the |:Shortcut!| prefix (with a bang) to describe existing shortcuts.
+
+* Use the |:Shortcut| prefix (without a bang) to define brand new shortcuts.
+
+* Use the |:Shortcuts| command to display a searchable menu of shortcuts.
+
+* Use the |g:shortcuts| variable to access shortcuts keys and descriptions.
+
+------------------------------------------------------------------------------
+SETUP                                                         *shortcut-setup*
+------------------------------------------------------------------------------
+
+I recommend that you define these two shortcuts for discovery and fallback
+(feel free to change the "<Leader>" key to your own commonly used prefix):
 >
-	call shortcut#def('Window -> Open above', 'aboveleft split')
-	call shortcut#map('<Space> w O', 'Window -> Open above')
+	Shortcut show shortcut menu and run chosen shortcut
+		\ noremap <silent> <Leader><Leader> :Shortcuts<Return>
 
-Alternatively, you can do all of the above in one shot using |shortcut#map|:
+	Shortcut fallback to shortcut menu on partial entry
+		\ noremap <silent> <Leader> :Shortcuts<Return>
+
+The fallback shortcut's keys should represent the common prefix used by most
+of your shortcuts so that it can automatically launch the shortcut menu for
+you when you pause partway while typing a shortcut, say, because you forgot
+the rest of it or because you just want to see the shortcut menu again to
+discover what else is available.  However, this is not a strict requirement
+because you might find it useful to map shortcuts with uncommon prefixes when
+you know them by heart and you thereby feel that a fallback is unnecessary.
+As a result, you can map any keys to any shortcut, regardless of the prefix!
+Furthermore, you can set up multiple fallback shortcuts too, one per prefix.
+
+------------------------------------------------------------------------------
+VARIABLES                                                       *shortcut-var*
+------------------------------------------------------------------------------
+
+g:shortcuts							*g:shortcuts*
+		Dictionary that maps a shortcut's {keys} to its {description}.
+
+------------------------------------------------------------------------------
+COMMANDS                                                        *shortcut-cmd*
+------------------------------------------------------------------------------
+
+:Shortcuts!							*:Shortcuts!*
+		Same as |:Shortcuts| except that the menu is shown fullscreen.
+
+:Shortcuts							*:Shortcuts*
+		Display a |fzf-vim| menu of shortcuts described in |g:shortcuts|.
+		When an item is chosen from the menu, its shortcut {keys} are
+		synthetically replayed (as if you typed them) via |feedkeys()|.
+
+:Shortcut! {keys} {description}					*:Shortcut!*
+		Associate an existing shortcut's {keys} to its {description}
+		in the |g:shortcuts| dictionary.  Extra whitespace is ignored.
+
+		For real-life examples, take a look at this file in my |vimrc|:
+		https://github.com/sunaku/.vim/blob/dvorak/bundle/motion/unimpaired.vim
 >
-	call shortcut#map('<Space> w O', 'Window -> Open above', 'aboveleft split')
+		Shortcut! [f  go to previous file in current file's directory
+		Shortcut! ]f  go to next     file in current file's directory
 
-For more real-life examples, browse the files in this folder of my |vimrc|:
+:Shortcut {description} {|:map-commands|}			*:Shortcut*
+		Define a new shortcut by first executing {|:map-commands|} and
+		then associating the resulting shortcut to its {description}
+		in the |g:shortcuts| dictionary.  Extra whitespace is ignored.
 
-	https://github.com/sunaku/.vim/tree/spacey/shortcut
-
-Note: If your shortcut's logic is too complex to be placed in a function call,
-you can place it inside a separate function named according to |shortcut#fun|:
+		For example, consider any |key-mapping| that takes this form:
 >
-	call shortcut#map('<Space> a b c', 'Your Shortcut Name Here')
-	function! Shortcut_your_shortcut_name_here() abort
-		" put your shortcut's complex actions here
-	endfunction
+		map definition
+<
+		Now simply prefix the |:Shortcut| command and a {description}:
+>
+		Shortcut description map definition
+<
+		Note that you can split this construct onto multiple lines:
+>
+		Shortcut description
+			\ map definition
+<
+		For real-life examples, take a look at this file in my |vimrc|:
+		https://github.com/sunaku/.vim/blob/dvorak/plugin/format.vim
+>
+		Shortcut duplicate before cursor and then comment-out
+			\ map <Space>cP  <Plug>NERDCommenterYank`[P
 
-------------------------------------------------------------------------------
-SHORTCUTS                                                       *shortcut-def*
-------------------------------------------------------------------------------
+		Shortcut fzf files in directory and go to chosen file
+			\ nnoremap <silent> <Space>ef :Files<Return>
 
-Shortcut_discover()                                        *Shortcut_discover*
-		Opens a |unite| menu using the `shortcut` source, which lets
-		you interactively search for and execute a chosen shortcut.
+		Shortcut save file as...
+			\ nnoremap <silent> <Space>yf :call feedkeys(":saveas %\t", "t")<Return>
 
-Shortcut_repeat()                                            *Shortcut_repeat*
-		Runs |shortcut#repeat|.
+		for i in range(1,9)
+			execute 'Shortcut go to tab number '. i .' '
+				\ 'nnoremap <silent> <Space>'. i .'t :tabfirst<Bar>'. i .'tabnext<Return>'
+		endfor
 
-------------------------------------------------------------------------------
-FUNCTIONS                                                       *shortcut-api*
-------------------------------------------------------------------------------
+		Shortcut comment-out using FIGlet ASCII art decoration
+			\ nnoremap <silent> <Space>c@ V:call CommentUsingFIGlet()<Return>
+			\|vnoremap <silent> <Space>c@ :<C-U>call CommentUsingFIGlet()<Return>
 
-shortcut#def({name}, {...})                                     *shortcut#def*
-		Defines {name} shortcut to execute the {...} expressions,
-		which can be any combination of (1) arbitrary lines in a Vim
-		function body, (2) "<Plug>" key bindings, or (3) the names of
-		other shortcuts defined by |shortcut#fun|.
-
-		In particular, to distinguish the third case from arbitrary
-		Vim expressions, the names of other shortcuts specified to
-		this function MUST contain " -> ".  Note: Since |shortcut#fun|
-		strips non-word characters, this will not affect the resulting
-		function name that is computed: it simply aids identification.
-
-		If no {...} expressions are given, the shortcut is configured
-		to execute an existing function named according to the
-		mangling rules defined by |shortcut#fun|.  Otherwise, such a
-		function is (re)defined using {...} as its function body.
-
-shortcut#map({keys}, {name}, [...])                             *shortcut#map*
-		Binds {keys} to run {name} shortcut, optionally defined by
-		[...] expressions which are passed down to |shortcut#def|.
-
-shortcut#run({name}, [mode], [range])                           *shortcut#run*
-		Runs {name} shortcut, optionally under [mode]: either "n" for
-		normal mode or "v" for visual mode. The latter (namely "v")
-		restores the visual selection on which the original shortcut
-		may have been triggered before {name} shortcut is executed.
-
-		In addition, the optional [range] specifies which lines the
-		{name} shortcut should operate on.  If it is invalid (|E16|),
-		then it is treated as a simple repetition |count| instead.
-
-shortcut#fun({name})                                            *shortcut#fun*
-		Returns the name of the function that handles {name} shortcut
-		by making it lowercase, removing non-word characters, and
-		prefixing "Shortcut_".
-
-shortcut#repeat()                                            *shortcut#repeat*
-		Repeats the shortcut most recently executed by |shortcut#run|.
-
-shortcut#mode()                                                *shortcut#mode*
-		Retuns the mode under which the current or the most recent
-		shortcut was run.
+		function! CommentUsingFIGlet()
+			" ...
+		endfunction
+<
 
  vim:tw=78:ts=8:ft=help:norl:

@@ -1,6 +1,3 @@
-call shortcut#def('Shortcut -> Discover', 'Unite shortcut')
-call shortcut#def('Shortcut -> Repeat', 'call shortcut#repeat()')
-
 if exists('g:loaded_shortcut')
   finish
 else
