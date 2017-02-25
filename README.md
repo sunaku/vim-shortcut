@@ -7,7 +7,7 @@ forgot the rest of it or because you just want to see the shortcut menu again
 to discover what else is available.  You can interactively filter the menu by
 typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 
-![Screencast](https://github.com/sunaku/vim-shortcut/raw/gh-pages/README.gif)
+[![asciicast](https://asciinema.org/a/104572.png)](https://asciinema.org/a/104572?autoplay=1)
 
 ## Requirements
 
