@@ -14,7 +14,8 @@ function! s:shortcut_menu_command(fullscreen) range abort
   let s:is_from_visual = a:firstline == line("'<") && a:lastline == line("'>")
   call fzf#run(fzf#wrap('Shortcuts', s:shortcut_menu_options({
         \ 'source': s:shortcut_menu_items(),
-        \ 'sink': function('s:shortcut_menu_item_action')
+        \ 'sink': function('s:shortcut_menu_item_action'),
+        \ 'options': '--tiebreak=begin'
         \ }), a:fullscreen))
 endfunction
 
@@ -43,7 +44,7 @@ function! s:shortcut_menu_options(options) abort
     " and propagate it into FZF as user's keystrokes
     " https://github.com/junegunn/fzf.vim/issues/307
     let typeahead = ShortcutTypeaheadInput()
-    let a:options['options'] = '--query=' . shellescape(typeahead)
+    let a:options['options'] .= ' --query=' . shellescape(typeahead)
   endif
   return a:options
 endfunction
