@@ -55,7 +55,7 @@ Shortcut! keys description
 ```
 
 For more examples, [see my vimrc](
-https://github.com/sunaku/.vim/blob/dvorak/bundle/motion/unimpaired.vim
+https://github.com/sunaku/.vim/blob/qwerty/bundle/motion/unimpaired.vim
 ):
 
 ```vim
@@ -89,7 +89,7 @@ Shortcut description
 ```
 
 For more examples, [see my vimrc](
-https://github.com/sunaku/.vim/blob/dvorak/plugin/format.vim
+https://github.com/sunaku/.vim/blob/qwerty/plugin/format.vim
 ):
 
 ```vim
@@ -132,8 +132,7 @@ Run `:help shortcut` or see the `doc/shortcut.txt` file.
 
 ## Testing
 
-Developers can run the [vim-spec] tests:
-[vim-spec]: https://github.com/kana/vim-vspec
+Developers can run the [vim-spec]( https://github.com/kana/vim-vspec ) tests:
 
 ```sh
 gem install bundler         # first time

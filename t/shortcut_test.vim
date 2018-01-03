@@ -24,10 +24,10 @@ describe 'ShortcutKeystrokes()'
   it 'compiles leader keys into \ when not defined'
     Expect ShortcutKeystrokes('<Leader>') == '\'
     Expect ShortcutKeystrokes('<leader>') == '\'
-    Expect ShortcutKeystrokes('<leader><leader>') == '\\'
+    Expect ShortcutKeystrokes('<leader><Leader>') == '\\'
     Expect ShortcutKeystrokes('<LocalLeader>') == '\'
     Expect ShortcutKeystrokes('<localleader>') == '\'
-    Expect ShortcutKeystrokes('<localleader><localleader>') == '\\'
+    Expect ShortcutKeystrokes('<localleader><LocalLeader>') == '\\'
   end
 
   it 'compiles leader keys into their defined values'
@@ -48,9 +48,9 @@ describe ':Shortcut!'
     Expect g:shortcuts == {'shortcut': 'description'}
   end
 
-  it 'preserves a space between words in description'
+  it 'squeezes whitespace between words in description'
     let g:shortcuts = {}
-    Shortcut! shortcut description goes here
+    Shortcut! shortcut description   goes	here
     Expect g:shortcuts == {'shortcut': 'description goes here'}
   end
 
@@ -110,9 +110,9 @@ describe 'ShortcutParseDefineCommand()'
   end
 
   it 'parses description, shortcut, and definition'
-    for mode_flag in extend([''], ['n', 'v', 'x', 's', 'o', 'i', 'l', 'c', 't'])
+    for mode_flag in ['', 'n', 'v', 'x', 's', 'o', 'i', 'l', 'c', 't']
       for recursive in ['', 'nore']
-        for argument in extend([''], ['<buffer>', '<nowait>', '<silent>', '<special>', '<script>', '<expr>', '<unique>'])
+        for argument in ['', '<buffer>', '<nowait>', '<silent>', '<special>', '<script>', '<expr>', '<unique>']
           let command = mode_flag . recursive . 'map'
           call s:test_parse_define(command . ' ' . argument)
           call s:test_parse_define(command . ' ' . argument . ' ' . argument)

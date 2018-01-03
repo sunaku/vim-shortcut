@@ -1,8 +1,7 @@
 if exists('g:loaded_shortcut')
   finish
-else
-  let g:loaded_shortcut = 1
 endif
+let g:loaded_shortcut = 1
 
 if !exists('g:shortcuts')
   let g:shortcuts = {}

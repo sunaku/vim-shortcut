@@ -75,7 +75,7 @@ COMMANDS                                                        *shortcut-cmd*
 		in the |g:shortcuts| dictionary.  Extra whitespace is ignored.
 
 		For real-life examples, take a look at this file in my |vimrc|:
-		https://github.com/sunaku/.vim/blob/dvorak/bundle/motion/unimpaired.vim
+		https://github.com/sunaku/.vim/blob/qwerty/bundle/motion/unimpaired.vim
 >
 		Shortcut! [f  go to previous file in current file's directory
 		Shortcut! ]f  go to next     file in current file's directory
@@ -99,7 +99,7 @@ COMMANDS                                                        *shortcut-cmd*
 			\ map definition
 <
 		For real-life examples, take a look at this file in my |vimrc|:
-		https://github.com/sunaku/.vim/blob/dvorak/plugin/format.vim
+		https://github.com/sunaku/.vim/blob/qwerty/plugin/format.vim
 >
 		Shortcut duplicate before cursor and then comment-out
 			\ map <Space>cP  <Plug>NERDCommenterYank`[P
