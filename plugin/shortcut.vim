@@ -8,6 +8,7 @@ if !exists('g:shortcuts')
 endif
 
 command! -range -bang Shortcuts <line1>,<line2>call s:shortcut_menu_command(<bang>0)
+command! -range -bang ShortcutsRangeless call s:shortcut_menu_command(<bang>0)
 
 function! s:shortcut_menu_command(fullscreen) range abort
   let s:is_from_visual = a:firstline == line("'<") && a:lastline == line("'>")

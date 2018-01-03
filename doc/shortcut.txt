@@ -70,6 +70,23 @@ COMMANDS                                                        *shortcut-cmd*
 		When an item is chosen from the menu, its shortcut {keys} are
 		synthetically replayed (as if you typed them) via |feedkeys()|.
 
+		The cursor will be moved to the beginning of the line before
+		the menu is shown.  To avoid this, use |:ShortcutsRangeless|.
+
+:ShortcutsRangeless!					*:ShortcutsRangeless!*
+		Same as |:ShortcutsRangeless| except that menu is fullscreen.
+
+:ShortcutsRangeless					*:ShortcutsRangeless*
+		Same as |:Shortcuts| except that |[range]| argument is ignored.
+
+		This prevents the cursor from moving to the beginning of line
+		before the shortcut menu is shown, but it comes at the cost of
+		preventing your chosen shortcut from operating on a visual
+		selection (note: repetition |[count]| will continue to work).
+
+		To avoid this limitation, just trigger the shortcut directly
+		(without choosing through a menu) or use |:Shortcuts| instead.
+
 :Shortcut! {keys} {description}					*:Shortcut!*
 		Associate an existing shortcut's {keys} to its {description}
 		in the |g:shortcuts| dictionary.  Extra whitespace is ignored.
