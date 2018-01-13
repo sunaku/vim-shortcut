@@ -1,5 +1,26 @@
 source plugin/shortcut.vim
 
+describe 'ShortcutLeaderKeys()'
+  it 'compiles leader keys into \ when not defined'
+    Expect ShortcutLeaderKeys('<Leader>') == '\'
+    Expect ShortcutLeaderKeys('<leader>') == '\'
+    Expect ShortcutLeaderKeys('<leader><Leader>') == '\\'
+    Expect ShortcutLeaderKeys('<LocalLeader>') == '\'
+    Expect ShortcutLeaderKeys('<localleader>') == '\'
+    Expect ShortcutLeaderKeys('<localleader><LocalLeader>') == '\\'
+  end
+
+  it 'compiles leader keys into their defined values'
+    let g:mapleader = 'x'
+    Expect ShortcutLeaderKeys('<Leader>') == 'x'
+    unlet g:mapleader
+
+    let g:maplocalleader = 'y'
+    Expect ShortcutLeaderKeys('<LocalLeader>') == 'y'
+    unlet g:maplocalleader
+  end
+end
+
 describe 'ShortcutKeystrokes()'
   it 'preserves non-symbolic keys during compile'
     Expect ShortcutKeystrokes('') == ''

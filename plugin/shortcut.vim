@@ -20,8 +20,9 @@ function! s:shortcut_menu_command(fullscreen) range abort
 endfunction
 
 function! s:shortcut_menu_items() abort
-  let pad = 4 + max(map(keys(g:shortcuts), 'len(v:val)'))
-  return values(map(copy(g:shortcuts), "printf('%-".pad."S%s', v:key, v:val)"))
+  let labels = map(copy(g:shortcuts), 'ShortcutLeaderKeys(v:key)')
+  let width = max(map(values(labels), 'len(v:val)')) + 4
+  return values(map(labels, "printf('%-".width."S%s', v:val, g:shortcuts[v:key])"))
 endfunction
 
 function! s:shortcut_menu_item_action(choice) abort
@@ -64,15 +65,21 @@ function! ShortcutTypeaheadInput()
   return chars
 endfunction
 
-function! ShortcutKeystrokes(input) abort
-  let escaped = substitute(a:input, '\ze[\<"]', '\', 'g')
+function! ShortcutLeaderKeys(input) abort
+  let result = a:input
 
   let leader = get(g:, 'mapleader', '\')
-  let escaped = substitute(escaped, '\c<Leader>', leader, 'g')
+  let result = substitute(result, '\c<Leader>', leader, 'g')
 
   let localleader = get(g:, 'maplocalleader', '\')
-  let escaped = substitute(escaped, '\c<LocalLeader>', localleader, 'g')
+  let result = substitute(result, '\c<LocalLeader>', localleader, 'g')
 
+  return result
+endfunction
+
+function! ShortcutKeystrokes(input) abort
+  let leadered = ShortcutLeaderKeys(a:input)
+  let escaped = substitute(leadered, '\ze[\<"]', '\', 'g')
   execute 'return "'. escaped .'"'
 endfunction
 
