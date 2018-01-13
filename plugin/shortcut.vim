@@ -112,6 +112,13 @@ function! s:define_shortcut(shortcut, description, definition) abort
 endfunction
 
 function! s:describe_shortcut(shortcut, description) abort
+  if get(g:, 'shortcuts_overwrite_warning', 0)
+        \ && has_key(g:shortcuts, a:shortcut)
+        \ && a:description != g:shortcuts[a:shortcut]
+    echomsg 'shortcut.vim: overwriting '. string(a:shortcut) .' description'
+          \ .' from '. string(g:shortcuts[a:shortcut])
+          \ .' to '. string(a:description)
+  endif
   let g:shortcuts[a:shortcut] = a:description
 endfunction
 

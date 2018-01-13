@@ -23,6 +23,8 @@ typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 
 * Use the `g:shortcuts` variable to access shortcuts keys and descriptions.
 
+* Use the `g:shortcuts_overwrite_warning` variable to detect any conflicts.
+
 ### Discovery & fallback shortcuts
 
 I recommend that you define these two shortcuts for discovery and fallback

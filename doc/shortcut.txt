@@ -28,6 +28,8 @@ USAGE                                                         *shortcut-usage*
 
 * Use the |g:shortcuts| variable to access shortcuts keys and descriptions.
 
+* Use the |g:shortcuts_overwrite_warning| variable to detect any conflicts.
+
 ------------------------------------------------------------------------------
 SETUP                                                         *shortcut-setup*
 ------------------------------------------------------------------------------
@@ -57,6 +59,13 @@ VARIABLES                                                       *shortcut-var*
 
 g:shortcuts							*g:shortcuts*
 		Dictionary that maps a shortcut's {keys} to its {description}.
+
+g:shortcuts_overwrite_warning			*g:shortcuts_overwrite_warning*
+		Displays a warning when a shortcut description is overwritten.
+		This is disabled by default.  Assign 1 to enable this feature.
+>
+		let g:shortcuts_overwrite_warning = 1	" enable this warning
+<
 
 ------------------------------------------------------------------------------
 COMMANDS                                                        *shortcut-cmd*
