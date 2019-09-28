@@ -134,7 +134,7 @@ Run `:help shortcut` or see the `doc/shortcut.txt` file.
 
 ## Testing
 
-Developers can run the [vim-spec]( https://github.com/kana/vim-vspec ) tests:
+Developers can run the [vim-vspec]( https://github.com/kana/vim-vspec ) tests:
 
 ```sh
 gem install bundler         # first time
