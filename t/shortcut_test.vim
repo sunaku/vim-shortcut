@@ -108,6 +108,39 @@ describe ':Shortcut'
     Expect output =~ '\v\n\s+shortcut\s+expression\n'
   end
 
+  it 'resolves <SID>s in definition to caller script'
+    call s:assert_resolves_SID('t/shortcut_test/resolve_caller_SID_from_stacktrace')
+    call s:assert_resolves_SID('t/shortcut_test/resolve_caller_SID_from_scriptnames')
+  end
+
+  function! s:assert_resolves_SID(test_script_file) abort
+    " execute the test script
+    execute 'source' fnameescape(a:test_script_file)
+    redir => output
+      silent scriptnames
+    redir END
+    let test_script_SNR = count(output, "\n")
+
+    " assert shortcut defined
+    redir => output
+      map shortcut
+    redir END
+    Expect output =~ '\v\n\s+shortcut\s+\V:call <SNR>'. test_script_SNR .'_handler()<CR>'
+
+    " assert shortcut handler
+    let g:shortcut_handler_called = 0
+    normal shortcut
+    Expect g:shortcut_handler_called == 1
+  endfunction
+
+  it 'handles multiple <SID>s in the same definition'
+    Shortcut description map shortcut :call <SID>foo()<bar>call <SID>baz()<CR>
+    redir => output
+      map shortcut
+    redir END
+    Expect output =~ '\v\n\s+shortcut\s+\V:call <SNR>2_foo()|call <SNR>2_baz()<CR>'
+  end
+
   it 'also remembers the description of the shortcut'
     let g:shortcuts = {}
     Shortcut description map shortcut expression

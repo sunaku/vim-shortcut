@@ -1,0 +1,7 @@
+Shortcut description map shortcut :call <SID>handler()<CR>
+
+function! s:handler() abort
+  let g:shortcut_handler_called = 1
+endfunction
+
+" vim: filetype=vim

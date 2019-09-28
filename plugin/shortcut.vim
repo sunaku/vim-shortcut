@@ -83,13 +83,13 @@ function! ShortcutKeystrokes(input) abort
   execute 'return "'. escaped .'"'
 endfunction
 
-command! -bang -nargs=+ Shortcut call s:shortcut_command(<q-args>, <bang>0)
+command! -bang -nargs=+ Shortcut call s:shortcut_command(<q-args>, <bang>0, expand('<sfile>'))
 
-function! s:shortcut_command(qargs, bang) abort
+function! s:shortcut_command(qargs, bang, caller) abort
   if a:bang
     call s:handle_describe_command(a:qargs)
   else
-    call s:handle_define_command(a:qargs)
+    call s:handle_define_command(a:qargs, a:caller)
   endif
 endfunction
 
@@ -108,14 +108,45 @@ function! ShortcutParseDescribeCommand(input) abort
   return [shortcut, description]
 endfunction
 
-function! s:handle_define_command(qargs) abort
+function! s:handle_define_command(qargs, caller) abort
   let [shortcut, description, definition] = ShortcutParseDefineCommand(a:qargs)
-  call s:define_shortcut(shortcut, description, definition)
+  call s:define_shortcut(shortcut, description, definition, a:caller)
 endfunction
 
-function! s:define_shortcut(shortcut, description, definition) abort
-  execute a:definition
+function! s:define_shortcut(shortcut, description, definition, caller) abort
+  execute s:resolve_caller_SIDs_in_definition(a:definition, a:caller)
   call s:describe_shortcut(a:shortcut, a:description)
+endfunction
+
+function! s:resolve_caller_SIDs_in_definition(definition, caller) abort
+  let caller_SID = s:resolve_caller_SID(a:caller)
+  return substitute(a:definition, '<SID>', caller_SID, 'g')
+endfunction
+
+function! s:resolve_caller_SID(caller) abort
+  return '<SNR>'. s:resolve_caller_SNR(a:caller) .'_'
+endfunction
+
+function! s:resolve_caller_SNR(caller) abort
+  let caller_SNR = s:resolve_caller_SNR_from_stacktrace(a:caller)
+  if empty(caller_SNR)
+    let caller_SNR = s:resolve_caller_SNR_from_scriptnames(a:caller)
+  endif
+  return caller_SNR
+endfunction
+
+function! s:resolve_caller_SNR_from_stacktrace(caller) abort
+  " See :help <SNR>
+  return matchstr(a:caller, '.*<SNR>\zs\d\+\ze_')
+endfunction
+
+function! s:resolve_caller_SNR_from_scriptnames(caller) abort
+  " See :help scriptnames-dictionary
+  redir => output
+    silent scriptnames
+  redir END
+  let caller_relative_path = fnamemodify(a:caller, ':~')
+  return matchstr(output, '\d\+\ze: \V'. caller_relative_path)
 endfunction
 
 function! s:describe_shortcut(shortcut, description) abort
