@@ -25,7 +25,7 @@ class Source(Base):
 
         for shortcut, description in self.vim.vars["shortcuts"].items():
             shortcuts[shortcut] = {
-                'word': '{0:<6} -- {1}'.format(shortcut, description),
+                'word': '{0:<12} -- {1}'.format(shortcut, description),
                 'action__command': shortcut
             }
 
