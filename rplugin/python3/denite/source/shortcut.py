@@ -21,11 +21,11 @@ class Source(Base):
 
 
     def gather_candidates(self, context: UserContext) -> Candidates:
-        shortcuts= {}
+        shortcuts = {}
 
         for shortcut, description in self.vim.vars["shortcuts"].items():
-            shortcuts [shortcut] = {
-                'word': shortcut + '->' + description,
+            shortcuts[shortcut] = {
+                'word': '{0:<6} -- {1}'.format(shortcut, description),
                 'action__command': shortcut
             }
 
