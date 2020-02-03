@@ -22,11 +22,9 @@ class Source(Base):
         shortcuts = {}
 
         for shortcut, description in self.vim.vars["shortcuts"].items():
-            command = self.vim.eval('ShortcutLeaderKeys("{}")'.format(
-                shortcut))
             shortcuts[shortcut] = {
                 'word': '{0:<12} -- {1}'.format(shortcut, description),
-                'action__command': command
+                'action__command': shortcut
             }
 
         return sorted(shortcuts.values(), key=lambda value: value['word'])
