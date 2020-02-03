@@ -18,8 +18,6 @@ class Source(Base):
         self.name = 'shortcut'
         self.kind = Kind(vim)
 
-
-
     def gather_candidates(self, context: UserContext) -> Candidates:
         shortcuts = {}
 
@@ -39,3 +37,5 @@ class Kind(Command):
         super().__init__(vim)
         self.name = 'shortcut'
 
+    def action_edit(self, context: UserContext) -> None:
+        return super().action_execute(context)
