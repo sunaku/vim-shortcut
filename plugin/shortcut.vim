@@ -25,6 +25,10 @@ function! s:shortcut_menu_items() abort
   return values(map(labels, "printf('%-".width."S%s', v:val, g:shortcuts[v:key])"))
 endfunction
 
+function! ShortcutFeedKeys(choice) abort
+  call s:shortcut_menu_item_action(a:choice)
+endfunction
+
 function! s:shortcut_menu_item_action(choice) abort
   let shortcut = substitute(a:choice, '\s.*', '', '')
   let keystrokes = ShortcutKeystrokes(shortcut)
