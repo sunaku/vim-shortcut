@@ -33,9 +33,11 @@ class Source(Base):
 
 
 class Kind(Command):
+
     def __init__(self, vim: Nvim) -> None:
         super().__init__(vim)
+
         self.name = 'shortcut'
 
     def action_edit(self, context: UserContext) -> None:
-        return super().action_execute(context)
+        return super().action_edit(context)
