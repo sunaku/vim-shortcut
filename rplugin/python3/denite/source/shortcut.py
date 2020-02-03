@@ -41,5 +41,5 @@ class Kind(Command):
 
     def action_edit(self, context: UserContext) -> None:
         target = context['targets'][0]
-        self.debug(target['action__command'])
+        self.debug(f"{target['action__command']}")
         self.vim.call('feedkeys', f"{target['action__command']}")
