@@ -26,7 +26,8 @@ function! s:shortcut_menu_items() abort
   return values(map(labels, "printf('%-".width."S%s', v:val, g:shortcuts[v:key])"))
 endfunction
 
-function! ShortcutFeedKeys(choice) abort
+function! ShortcutFeedKeys(choice) range abort
+  let s:is_from_visual = a:firstline == line("'<") && a:lastline == line("'>")
   call s:shortcut_menu_item_action(a:choice)
 endfunction
 
