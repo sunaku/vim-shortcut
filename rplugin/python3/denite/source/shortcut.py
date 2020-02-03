@@ -39,6 +39,9 @@ class Kind(Command):
 
         self.name = 'shortcut'
 
-    def action_edit(self, context: UserContext) -> None:
+    def action_execute(self, context: UserContext) -> None:
         target = context['targets'][0]
         self.vim.call('feedkeys', f"{target['action__command']}")
+
+    def action_edit(self, context: UserContext) -> None:
+        return super().action_execute(context)
