@@ -32,15 +32,14 @@ function! ShortcutFeedKeys(choice) range abort
 endfunction
 
 function! s:shortcut_menu_item_action(choice) abort
+  echo a:choice
   let shortcut = substitute(a:choice, '\s.*', '', '')
   let keystrokes = ShortcutKeystrokes(shortcut)
   if s:is_from_visual
-    echo 'is from visual'
     normal! gv
   elseif v:count
     call feedkeys(v:count, 'n')
   endif
-  echo 'feedkeys:' keystrokes
   call feedkeys(keystrokes)
 endfunction
 
