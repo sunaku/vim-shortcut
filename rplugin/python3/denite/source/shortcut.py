@@ -24,8 +24,8 @@ class Source(Base):
         shortcuts = {}
 
         for shortcut, description in self.vim.vars["shortcuts"].items():
-            command = 'call ShortcutFeedKeys("{}")'.format(
-                shortcut)
+            command = self.vim.eval('ShortcutLeaderKeys("{}")'.format(
+                shortcut))
             shortcuts[shortcut] = {
                 'word': '{0:<12} -- {1}'.format(shortcut, description),
                 'action__command': command
@@ -39,13 +39,3 @@ class Kind(Command):
         super().__init__(vim)
         self.name = 'shortcut'
 
-    def action_edit(self, context: UserContext) -> None:
-        return super().action_execute(context)
-
-    def _execute(self, context: UserContext,
-                 command: str, histadd: bool) -> None:
-        if not command:
-            return
-        self.vim.call('denite#util#execute_command', command, False)
-        if histadd:
-            self.vim.call('histadd', ':', command)
