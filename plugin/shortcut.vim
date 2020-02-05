@@ -7,6 +7,10 @@ if !exists('g:shortcuts')
   let g:shortcuts = {}
 endif
 
+if !exists('g:shortcut_expand_leader_key')
+  g:shortcut_expand_leader_key = v:true
+endif
+
 command! -range -bang Shortcuts <line1>,<line2>call s:shortcut_menu_command(<bang>0)
 command! -range -bang ShortcutsRangeless call s:shortcut_menu_command(<bang>0)
 let s:is_from_visual = ''
@@ -21,7 +25,10 @@ function! s:shortcut_menu_command(fullscreen) range abort
 endfunction
 
 function! s:shortcut_menu_items() abort
-  let labels = map(copy(g:shortcuts), 'ShortcutLeaderKeys(v:key)')
+  let labels = g:shortcuts
+  if g:shortcut_expand_leader_key
+    let labels = map(copy(g:shortcuts), 'ShortcutLeaderKeys(v:key)')
+  endif
   let width = max(map(values(labels), 'len(v:val)')) + 4
   return values(map(labels, "printf('%-".width."S%s', v:val, g:shortcuts[v:key])"))
 endfunction
@@ -32,7 +39,6 @@ function! ShortcutFeedKeys(choice) range abort
 endfunction
 
 function! s:shortcut_menu_item_action(choice) abort
-  echo a:choice
   let shortcut = substitute(a:choice, '\s.*', '', '')
   let keystrokes = ShortcutKeystrokes(shortcut)
   if s:is_from_visual
