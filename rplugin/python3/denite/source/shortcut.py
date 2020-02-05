@@ -22,7 +22,7 @@ class Source(Base):
         shortcuts = {}
 
         for shortcut, description in self.vim.vars["shortcuts"].items():
-            if self.vim.vars('shortcut_expand_leader_keys') == 1:
+            if self.vim.vars['shortcut_expand_leader_keys'] == 1:
                 shortcut = self.vim.eval(f'ShortcutLeaderKeys("{shortcut}")')
 
             shortcuts[shortcut] = {
