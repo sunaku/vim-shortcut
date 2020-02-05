@@ -8,7 +8,7 @@ if !exists('g:shortcuts')
 endif
 
 if !exists('g:shortcut_expand_leader_key')
-  let g:shortcut_expand_leader_key = 1
+  let g:shortcut_expand_leader_keys = 1
 endif
 
 command! -range -bang Shortcuts <line1>,<line2>call s:shortcut_menu_command(<bang>0)
@@ -25,10 +25,11 @@ function! s:shortcut_menu_command(fullscreen) range abort
 endfunction
 
 function! s:shortcut_menu_items() abort
-  let labels = g:shortcuts
-  if g:shortcut_expand_leader_key
-    let labels = map(copy(g:shortcuts), 'ShortcutLeaderKeys(v:key)')
+  let apply = 'v:key'
+  if g:shortcut_expand_leader_keys
+    let apply = 'ShortcutLeaderKeys(v:key)'
   endif
+  let labels = map(copy(g:shortcuts), apply)
   let width = max(map(values(labels), 'len(v:val)')) + 4
   return values(map(labels, "printf('%-".width."S%s', v:val, g:shortcuts[v:key])"))
 endfunction
