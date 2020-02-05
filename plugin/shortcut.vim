@@ -8,7 +8,7 @@ if !exists('g:shortcuts')
 endif
 
 if !exists('g:shortcut_expand_leader_key')
-  g:shortcut_expand_leader_key = v:true
+  g:shortcut_expand_leader_key = 1
 endif
 
 command! -range -bang Shortcuts <line1>,<line2>call s:shortcut_menu_command(<bang>0)
