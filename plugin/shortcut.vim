@@ -7,7 +7,7 @@ if !exists('g:shortcuts')
   let g:shortcuts = {}
 endif
 
-if !exists('g:shortcut_expand_leader_key')
+if !exists('g:shortcut_expand_leader_keys')
   let g:shortcut_expand_leader_keys = 1
 endif
 
