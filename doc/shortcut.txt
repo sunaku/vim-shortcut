@@ -30,6 +30,10 @@ USAGE                                                         *shortcut-usage*
 
 * Use the |g:shortcuts_overwrite_warning| variable to detect any conflicts.
 
+* Use the |g:shortcut_expand_leader_keys| variable to indicate whether to 
+  expand leader keys in the Shortcuts list.
+
+
 ------------------------------------------------------------------------------
 SETUP                                                         *shortcut-setup*
 ------------------------------------------------------------------------------
@@ -67,6 +71,15 @@ g:shortcuts_overwrite_warning			*g:shortcuts_overwrite_warning*
 		let g:shortcuts_overwrite_warning = 1	" enable this warning
 <
 
+g:g:shortcut_expand_leader_keys		       *g:shortcuts_expand_leader_keys*
+		Option to expand leader keys in list.If you have the leader key 
+		set to <Space> it is useful to not expand.
+		This is enabled by default. Assign 0 to disable this feature.
+>
+		let g:shortcut_expand_leader_keys = 0	" disables expansion 
+<
+
+
 ------------------------------------------------------------------------------
 COMMANDS                                                        *shortcut-cmd*
 ------------------------------------------------------------------------------
@@ -95,6 +108,11 @@ COMMANDS                                                        *shortcut-cmd*
 
 		To avoid this limitation, just trigger the shortcut directly
 		(without choosing through a menu) or use |:Shortcuts| instead.
+
+:Denite shortcut					   *:Denite shortcut*
+		Display a |denite.nvim| menu of shortcuts described in |g:shortcuts|.
+		When an item is chosen from the menu, its shortcut {keys} are
+		synthetically replayed (as if you typed them) via |feedkeys()|.
 
 :Shortcut! {keys} {description}					*:Shortcut!*
 		Associate an existing shortcut's {keys} to its {description}
