@@ -12,7 +12,7 @@ typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 ## Requirements
 
 * [fzf.vim] plugin.
-* [denite.nvim](https://github.com/Shougo/denite.nvim) plugin.
+* [denite.nvim](https://github.com/Shougo/denite.nvim) optional plugin.
 
 ## Usage
 
