@@ -12,6 +12,7 @@ typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 ## Requirements
 
 * [fzf.vim] plugin.
+* [denite.nvim](https://github.com/Shougo/denite.nvim) plugin.
 
 ## Usage
 
@@ -20,6 +21,8 @@ typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 * Use the `Shortcut` prefix (without a bang) to define brand new shortcuts.
 
 * Use the `:Shortcuts` command to display a searchable menu of shortcuts.
+
+* Use the `:Denite shortcut` command to display a searcheable menu of shourtcuts through the denite interface
 
 * Use the `g:shortcuts` variable to access shortcuts keys and descriptions.
 
