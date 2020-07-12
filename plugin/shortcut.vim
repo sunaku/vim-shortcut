@@ -48,6 +48,14 @@ function! s:shortcut_menu_item_action(choice) abort
   call feedkeys(keystrokes)
 endfunction
 
+function! s:shortcut_menu_item_preview() abort
+  let menu_item = g:clap.display.getcurline()
+  let shortcut = matchstr(menu_item, '^\S\+')
+  let mapping = execute('verbose map '. shortcut)
+  let preview = split(mapping, "\n")
+  call g:clap.preview.show(preview)
+endfunction
+
 function! ShortcutLeaderKeys(input) abort
   let result = a:input
 
@@ -177,5 +185,6 @@ endfunction
 
 let g:clap_provider_shortcuts = {
       \ 'source': function('s:shortcut_menu_items'),
-      \ 'sink': function('s:shortcut_menu_item_action')
+      \ 'sink': function('s:shortcut_menu_item_action'),
+      \ 'on_move': function('s:shortcut_menu_item_preview')
       \ }
