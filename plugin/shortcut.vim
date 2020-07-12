@@ -12,6 +12,7 @@ command! -range -bang ShortcutsRangeless call s:shortcut_menu_command(<bang>0)
 
 function! s:shortcut_menu_command(fullscreen) range abort
   let s:is_from_visual = a:firstline == line("'<") && a:lastline == line("'>")
+  let s:cursor_position = winsaveview()
   call fzf#run(fzf#wrap('Shortcuts', s:shortcut_menu_options({
         \ 'source': s:shortcut_menu_items(),
         \ 'sink': function('s:shortcut_menu_item_action'),
@@ -33,6 +34,13 @@ function! s:shortcut_menu_item_action(choice) abort
   elseif v:count
     call feedkeys(v:count, 'n')
   endif
+
+  " restore cursor to original position before menu
+  call winrestview({
+        \ 'lnum': s:cursor_position.lnum,
+        \ 'col': s:cursor_position.curswant
+        \ })
+
   call feedkeys(keystrokes)
 endfunction
 
