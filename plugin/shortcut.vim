@@ -29,6 +29,13 @@ endfunction
 function! s:shortcut_menu_item_action(choice) abort
   let shortcut = substitute(a:choice, '\s.*', '', '')
   let keystrokes = ShortcutKeystrokes(shortcut)
+
+  " dismiss the shortcut menu and leave insert mode
+  " NOTE: without this, the feedkeys() calls below _sometimes_ behave as if
+  " the shortcut keys were _partially_ typed out in insert mode, which then
+  " triggers the shortcut menu again, thereby creating an endless menu loop!
+  call feedkeys("\<esc>", 'n')
+
   if s:is_from_visual
     normal! gv
   elseif v:count
