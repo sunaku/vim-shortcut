@@ -1,7 +1,7 @@
 # shortcut.vim
 
 This plugin provides a _discoverable_ shortcut system for Vim that is inspired
-by [Spacemacs] and powered by [fzf.vim].  It displays a searchable menu of
+by [Spacemacs] and powered by [vim-clap].  It displays a searchable menu of
 shortcuts when you pause partway while typing a shortcut, say, because you
 forgot the rest of it or because you just want to see the shortcut menu again
 to discover what else is available.  You can interactively filter the menu by
@@ -11,7 +11,7 @@ typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 
 ## Requirements
 
-* [fzf.vim] plugin.
+* [vim-clap] plugin.
 
 ## Usage
 
@@ -100,8 +100,8 @@ Shortcut duplicate before cursor and then comment-out
 ```
 
 ```vim
-Shortcut fzf files in directory and go to chosen file
-      \ nnoremap <silent> <Space>ef :Files<Return>
+Shortcut (clap) open file in/under working directory
+      \ nnoremap <silent> <Space>ef :Clap files<Return>
 ```
 
 ```vim
@@ -154,4 +154,4 @@ Distributed under [the same terms as Vim itself][LICENSE].
 
 [LICENSE]: http://vimdoc.sourceforge.net/htmldoc/uganda.html#license
 [Spacemacs]: http://spacemacs.org
-[fzf.vim]: https://github.com/junegunn/fzf.vim
+[vim-clap]: https://github.com/liuchengxu/vim-clap

@@ -9,9 +9,9 @@ INTRODUCTION                                                  *shortcut-intro*
 ------------------------------------------------------------------------------
 
 This plugin provides a discoverable shortcut system for Vim that is inspired
-by Emacs' Spacemacs http://spacemacs.org plugin and powered by Vim's |fzf-vim|
-https://github.com/junegunn/fzf.vim plugin.  It displays a searchable menu of
-shortcuts when you pause partway while typing a shortcut, say, because you
+by Emacs' Spacemacs http://spacemacs.org plugin and powered by Vim's |vim-clap|
+https://github.com/liuchengxu/vim-clap plugin.  It displays a searchable menu
+of shortcuts when you pause partway while typing a shortcut, say, because you
 forgot the rest of it or because you just want to see the shortcut menu again
 to discover what else is available.  You can interactively filter the menu by
 typing more shortcut keys or parts of shortcut descriptions shown in the menu.
@@ -75,7 +75,7 @@ COMMANDS                                                        *shortcut-cmd*
 		Same as |:Shortcuts| except that the menu is shown fullscreen.
 
 :Shortcuts							*:Shortcuts*
-		Display a |fzf-vim| menu of shortcuts described in |g:shortcuts|.
+		Display a |vim-clap| menu of shortcuts described in |g:shortcuts|.
 		When an item is chosen from the menu, its shortcut {keys} are
 		synthetically replayed (as if you typed them) via |feedkeys()|.
 
@@ -130,8 +130,8 @@ COMMANDS                                                        *shortcut-cmd*
 		Shortcut duplicate before cursor and then comment-out
 			\ map <Space>cP  <Plug>NERDCommenterYank`[P
 
-		Shortcut fzf files in directory and go to chosen file
-			\ nnoremap <silent> <Space>ef :Files<Return>
+		Shortcut (clap) open file in/under working directory
+			\ nnoremap <silent> <Space>ef :Clap files<Return>
 
 		Shortcut save file as...
 			\ nnoremap <silent> <Space>yf :call feedkeys(":saveas %\t", "t")<Return>
