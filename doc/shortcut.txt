@@ -16,6 +16,7 @@ forgot the rest of it or because you just want to see the shortcut menu again
 to discover what else is available.  You can interactively filter the menu by
 typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 
+
 ------------------------------------------------------------------------------
 USAGE                                                         *shortcut-usage*
 ------------------------------------------------------------------------------
@@ -30,6 +31,7 @@ USAGE                                                         *shortcut-usage*
 
 * Use the |g:shortcuts_overwrite_warning| variable to detect any conflicts.
 
+
 ------------------------------------------------------------------------------
 SETUP                                                         *shortcut-setup*
 ------------------------------------------------------------------------------
@@ -38,10 +40,11 @@ I recommend that you define these two shortcuts for discovery and fallback
 (feel free to change the "<Leader>" key to your own commonly used prefix):
 >
 	Shortcut show shortcut menu and run chosen shortcut
-		\ noremap <silent> <Leader><Leader> :Shortcuts<Return>
+	      \ noremap <silent> <Leader><Leader> :Shortcuts<Return>
 
 	Shortcut fallback to shortcut menu on partial entry
-		\ noremap <silent> <Leader> :Shortcuts<Return>
+	      \ noremap <silent> <Leader> :Shortcuts<Return>
+<
 
 The fallback shortcut's keys should represent the common prefix used by most
 of your shortcuts so that it can automatically launch the shortcut menu for
@@ -52,6 +55,7 @@ because you might find it useful to map shortcuts with uncommon prefixes when
 you know them by heart and you thereby feel that a fallback is unnecessary.
 As a result, you can map any keys to any shortcut, regardless of the prefix!
 Furthermore, you can set up multiple fallback shortcuts too, one per prefix.
+
 
 ------------------------------------------------------------------------------
 VARIABLES                                                       *shortcut-var*
@@ -101,10 +105,12 @@ COMMANDS                                                        *shortcut-cmd*
 		in the |g:shortcuts| dictionary.  Extra whitespace is ignored.
 
 		For real-life examples, take a look at this file in my |vimrc|:
+		(a portion of this file is shown below, for your convenience)
 		https://github.com/sunaku/.vim/blob/qwerty/bundle/motion/unimpaired.vim
 >
 		Shortcut! [f  go to previous file in current file's directory
 		Shortcut! ]f  go to next     file in current file's directory
+<
 
 :Shortcut {description} {|:map-commands|}			*:Shortcut*
 		Define a new shortcut by first executing {|:map-commands|} and
@@ -113,40 +119,41 @@ COMMANDS                                                        *shortcut-cmd*
 
 		For example, consider any |key-mapping| that takes this form:
 >
-		map definition
+			map definition
 <
 		Now simply prefix the |:Shortcut| command and a {description}:
 >
-		Shortcut description map definition
+			Shortcut description map definition
 <
 		Note that you can split this construct onto multiple lines:
 >
-		Shortcut description
-			\ map definition
+			Shortcut description
+			      \ map definition
 <
 		For real-life examples, take a look at this file in my |vimrc|:
+		(a portion of this file is shown below, for your convenience)
 		https://github.com/sunaku/.vim/blob/qwerty/plugin/format.vim
 >
 		Shortcut duplicate before cursor and then comment-out
-			\ map <Space>cP  <Plug>NERDCommenterYank`[P
+		      \ map <Space>cP  <Plug>NERDCommenterYank`[P
 
 		Shortcut fzf files in directory and go to chosen file
-			\ nnoremap <silent> <Space>ef :Files<Return>
+		      \ nnoremap <silent> <Space>ef :Files<Return>
 
 		Shortcut save file as...
-			\ nnoremap <silent> <Space>yf :call feedkeys(":saveas %\t", "t")<Return>
+		      \ nnoremap <silent> <Space>yf :call feedkeys(":saveas %\t", "t")<Return>
 
 		for i in range(1,9)
-			execute 'Shortcut go to tab number '. i .' '
-				\ 'nnoremap <silent> <Space>'. i .'t :tabfirst<Bar>'. i .'tabnext<Return>'
+		  execute 'Shortcut go to tab number '. i .' '
+		        \ 'nnoremap <silent> <Space>'. i .'t :tabfirst<Bar>'. i .'tabnext<Return>'
 		endfor
 
 		Shortcut comment-out using FIGlet ASCII art decoration
-			\ nnoremap <silent> <Space>c@ V:call CommentUsingFIGlet()<Return>
-			\|vnoremap <silent> <Space>c@ :<C-U>call CommentUsingFIGlet()<Return>
+		      \ nnoremap <silent> <Space>c@ V:call CommentUsingFIGlet()<Return>
+		      \|vnoremap <silent> <Space>c@ :<C-U>call CommentUsingFIGlet()<Return>
 
 		function! CommentUsingFIGlet()
-			" ...
+		  " ...
 		endfunction
 <
 
