@@ -35,18 +35,18 @@ function! s:shortcut_menu_item_action(choice) abort
   "
   call feedkeys("\<esc>", 'n')
 
-  " restore visual selection or numbered repetition
-  if s:is_from_visual
-    normal! gv
-  elseif v:count
-    call feedkeys(v:count, 'n')
-  endif
-
   " restore cursor to original position before menu
   call winrestview({
         \ 'lnum': s:cursor_position.lnum,
         \ 'col': s:cursor_position.curswant
         \ })
+
+  " restore visual selection or numbered repetition
+  if v:count
+    call feedkeys(v:count, 'n')
+  elseif s:is_from_visual
+    call feedkeys('gv', 'n')
+  endif
 
   " trigger shortcut by typing keys on user's behalf
   let shortcut = matchstr(a:choice, '^\S\+')
