@@ -18,6 +18,28 @@ typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 
 
 ------------------------------------------------------------------------------
+INSTALLATION                                                *shortcut-install*
+------------------------------------------------------------------------------
+
+1. Clone this plugin's Git repository as follows, or download and extract its
+   contents from <https://github.com/sunaku/vim-shortcut/archive/master.zip>.
+>
+        git clone https://github.com/sunaku/vim-shortcut.git ~/vim-shortcut
+<
+
+2. Run the following commands in Vim to start using this plugin immediately,
+   or add them to your |vimrc| file to automate this whenever you start Vim.
+>
+        :set runtimepath+=~/vim-shortcut
+        :runtime plugin/shortcut.vim
+<
+
+3. Run the following command inside Vim to learn more about using this plugin.
+>
+        :help shortcut.vim
+<
+
+------------------------------------------------------------------------------
 USAGE                                                         *shortcut-usage*
 ------------------------------------------------------------------------------
 

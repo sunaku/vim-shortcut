@@ -13,6 +13,23 @@ typing more shortcut keys or parts of shortcut descriptions shown in the menu.
 
 * [fzf.vim] plugin.
 
+## Installation
+
+1. Clone this Git repository as follows, or [download and extract its
+   contents]( https://github.com/sunaku/vim-shortcut/archive/master.zip ).
+
+        git clone https://github.com/sunaku/vim-shortcut.git ~/vim-shortcut
+
+2. Run the following commands in Vim to start using this plugin immediately,
+   or add them to your *vimrc* file to automate this whenever you start Vim.
+
+        :set runtimepath+=~/vim-shortcut
+        :runtime plugin/shortcut.vim
+
+3. Run the following command inside Vim to learn more about using this plugin.
+
+        :help shortcut.vim
+
 ## Usage
 
 * Use the `Shortcut!` prefix (with a bang) to describe existing shortcuts.
@@ -130,7 +147,7 @@ Any extra whitespace is ignored.
 
 ## Documentation
 
-Run `:help shortcut` or see the `doc/shortcut.txt` file.
+Run `:help shortcut.vim` or see the `doc/shortcut.txt` file.
 
 ## Testing
 

@@ -1,0 +1,15 @@
+:Shortcut	shortcut.txt	/*:Shortcut*
+:Shortcut!	shortcut.txt	/*:Shortcut!*
+:Shortcuts	shortcut.txt	/*:Shortcuts*
+:Shortcuts!	shortcut.txt	/*:Shortcuts!*
+:ShortcutsRangeless	shortcut.txt	/*:ShortcutsRangeless*
+:ShortcutsRangeless!	shortcut.txt	/*:ShortcutsRangeless!*
+g:shortcuts	shortcut.txt	/*g:shortcuts*
+g:shortcuts_overwrite_warning	shortcut.txt	/*g:shortcuts_overwrite_warning*
+shortcut-cmd	shortcut.txt	/*shortcut-cmd*
+shortcut-install	shortcut.txt	/*shortcut-install*
+shortcut-intro	shortcut.txt	/*shortcut-intro*
+shortcut-setup	shortcut.txt	/*shortcut-setup*
+shortcut-usage	shortcut.txt	/*shortcut-usage*
+shortcut-var	shortcut.txt	/*shortcut-var*
+shortcut.vim	shortcut.txt	/*shortcut.vim*
